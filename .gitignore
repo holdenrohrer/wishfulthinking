@@ -2,3 +2,4 @@ env
 __pycache__
 zip
 www.gutenberg.org
+.DS_STORE
