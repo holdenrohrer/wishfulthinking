@@ -1,8 +1,20 @@
+#!/usr/bin/python3
 import process_frequencies
 import process_book
+import remove_copyright
+import unzip
+import os
 
-file_path = "test.txt"
-with open(file_path, "r", encoding ="utf8") as file:
-    text = list(process_book.read_book(file))
+def get_frequencies():
+    n = 0
+    direntries = os.listdir('zip')
+    frequency = {}
+    for path in direntries:
+        with open('zip/'+path, 'rb') as f:
+            frequency = process_frequencies.get_word_frequencies(process_book.read_book(remove_copyright.process_file(unzip.unzip(f))), frequency)
+            f.close()
+            n += 1
+            print(f"finished {n} books")
+    return frequency
 
-print(process_frequencies.get_word_frequencies(text))
+print(get_frequencies())

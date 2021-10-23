@@ -5,17 +5,28 @@ def unzip(zipped_stream):
     for fname, size, chunks in stream_unzip(zipped_stream):
         return get_lines(chunks)
 
+header = b"Character set encoding: "
 def get_lines(chunky_stream):
-    buffer = ""
+    buffer = b""
+    encoding = 'utf-8'
+    encoding_known = False # assumed to be utf-8 until proven otherwise
     for chunk in chunky_stream:
-        chunk = chunk.decode('utf-8')
-        chunk = chunk.replace('\r\n','\n').replace('\r','\n')
-        lines = [word+'\n' for word in chunk.split('\n')];
+        chunk = chunk.replace(b'\r\n',b'\n').replace(b'\r',b'\n')
+        lines = [word+b'\n' for word in chunk.split(b'\n')];
         lines[0] = buffer + lines[0]
         buffer = lines[-1]
         lines.pop(-1)
         for line in lines:
-            yield line
-
-f = open("zip/22051.zip", 'rb')
-print(list(unzip(f)))
+            if not encoding_known:
+                if line.startswith(header):
+                    given = line[len(header):].upper()
+                    if given.startswith(b'UTF-8'):
+                        encoding = 'utf-8'
+                    elif given.startswith(b'ISO-8859-1') or given.startswith(b'ISO LATIN-1'):
+                        encoding = 'iso-8859-1'
+                    elif given.startswith(b'ASCII') or given.startswith(b'ISO-646-US') or given.startswith(b'US-ASCII'):
+                        encoding = 'ascii'
+                    else:
+                        raise Exception(f"Unknown encoding {given}")
+                    encoding_known = True
+            yield line.decode(encoding, 'ignore')
