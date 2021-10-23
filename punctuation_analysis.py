@@ -1,3 +1,5 @@
+import string
+
 def process_file(book_file):
     def process_line(line, arr):
         if line[:4] == '*** ':
@@ -35,6 +37,6 @@ def punctuation(iterable):
     return (comma_counter,sentence_counter,word_counter,avg_word_len, avg_sentence_len)
 
 file = open("TestFile2.txt", "r", encoding="utf8")
-print(punctuation(processFile(file)))
+print(punctuation(process_file(file)))
     
 
