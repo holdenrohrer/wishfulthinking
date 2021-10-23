@@ -38,7 +38,7 @@ def get_word_frequencies(text, frequencies=None):
             frequencies[word] += 1
         else: 
             frequencies[word] = 1
-    return islice(remove_stop_words({k: v/len(text) for k, v in sorted(frequencies.items(), key=lambda item: item[1], reverse = True)}).items(), 100)
+    return dict(islice(remove_stop_words({k: v/len(text) for k, v in sorted(frequencies.items(), key=lambda item: item[1], reverse = True)}).items(), 100))
 
 def remove_stop_words(word_freqs):
     for word in stop_words:
@@ -47,10 +47,15 @@ def remove_stop_words(word_freqs):
     return word_freqs
 
 def combine_frequencies (list_of_frequencies):
+    if len(list_of_frequencies) == 1:
+        return list_of_frequencies[0]
+    # final_frequencies set to the frequencies_by_genre dictionary that already exists
     final_frequencies = list_of_frequencies.pop(0)
+    # then loop back through that frequencies_by_genre dictionary?
     for frequencies in list_of_frequencies:
         for word in frequencies.keys():
             if word in final_frequencies.keys():
+                # wouldnt this double the values of list_of_frequencies.pop(0) aka frequencies_by_genre dictionary
                 final_frequencies[word] += frequencies[word]
             else:
                 final_frequencies[word] = frequencies[word]
