@@ -28,11 +28,6 @@ stop_words = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves',
 
 
 
-def read_book(lines):
-    return chain.from_iterable(map(process_line, lines))
-
-def process_line(line):
-    return "".join(l for l in line.lower().strip() if l not in string.punctuation).split()
 
 def get_word_frequencies(text, frequencies=None):
     if frequencies == None:
