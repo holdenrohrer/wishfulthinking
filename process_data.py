@@ -7,7 +7,8 @@ def get_frequencies_by_genre(frequencies_of_documents, genres):
     for genre in genres:
         frequencies_by_genre.append({})
     for document_data in frequencies_of_documents:
-        process_frequencies.combine_frequencies([frequencies_by_genre[genres.index(document_data[1])], document_data[0]])
+        for book_genre in document_data[1:]:
+            process_frequencies.combine_frequencies([frequencies_by_genre[genres.index(genre)], document_data[0]])
         
     
     return frequencies_by_genre

@@ -4,15 +4,50 @@ import naive_bayes
 import process_data
 import os
 
-genres = ["Science Fiction", "Mystery", "Romance", "Fantasy", "Nonfiction"]file_paths = ["prideandprejudice.txt", "janeeyre.txt", "frankenstein.txt"]
+genres = ["science fiction", "mystery", "romance", "fantasy", "nonfiction"]
 texts = []
 document_frequencies = []
-for file in os.listdir("archive"):
-    with open(file, "r", encoding ="utf8") as file:
-        text = list(process_book.read_book(file))
+files = []
+directory = './archive'
+for file in os.listdir(directory):
+    encoding = "utf8"
+    if file == "foreigndishes.txt":
+        encoding = "iso-8859-1"
+    with open(directory + "/" + str(file), "r", encoding =encoding) as file:
+        files.append(file)
+        try:
+            text = list(process_book.read_book(file))
+        except Exception as ex:
+            print(file)
+            raise ex
         texts.append(text)
         document_frequencies.append([process_frequencies.get_word_frequencies(text)])
 
+document_frequencies[0].append("humour")
+document_frequencies[1].append("horror")
+document_frequencies[2].append("gothic")
+document_frequencies[3].append("epic poetry")
+document_frequencies[4].append("fiction")
+document_frequencies[5].append("romance")
+document_frequencies[6].append("")
+document_frequencies[7].append("")
+document_frequencies[8].append("")
+document_frequencies[9].append("")
+document_frequencies[10].append("")
+document_frequencies[11].append("")
+document_frequencies[12].append("")
+document_frequencies[13].append("")
+document_frequencies[14].append("")
+document_frequencies[15].append("")
+document_frequencies[16].append("")
+document_frequencies[17].append("")
+
+
+genres = []
+for document_data in document_frequencies:
+    for genre in document_data[1:]:
+        if genre not in genres:
+            genres.append(genre)
 
 
 
