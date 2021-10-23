@@ -35,9 +35,4 @@ def get_lines(chunky_stream):
                     else:
                         raise Exception(f"Unknown encoding {given}")
                     encoding_known = True
-            try:
-                yield line.decode(encoding, 'ignore')
-            except Exception as ex:
-                print("here")
-                # print(line)
-                raise ex
+            yield line.decode(encoding, 'ignore')
