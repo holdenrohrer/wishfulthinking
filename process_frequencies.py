@@ -1,6 +1,7 @@
 import string
 import re
 from itertools import chain
+from itertools import islice
 stop_words = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves',
     'you', "you're", "you've", "you'll", "you'd", 'your', 'yours', 
     'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 
@@ -37,10 +38,20 @@ def get_word_frequencies(text, frequencies=None):
             frequencies[word] += 1
         else: 
             frequencies[word] = 1
-    return remove_stop_words({k: v/len(text) for k, v in sorted(frequencies.items(), key=lambda item: item[1], reverse = True)})
+    return islice(remove_stop_words({k: v/len(text) for k, v in sorted(frequencies.items(), key=lambda item: item[1], reverse = True)}).items(), 100)
 
 def remove_stop_words(word_freqs):
     for word in stop_words:
         if word in word_freqs.keys():
             word_freqs.pop(word)
     return word_freqs
+
+def combine_frequencies (list_of_frequencies):
+    final_frequencies = list_of_frequencies.pop(0)
+    for frequencies in list_of_frequencies:
+        for word in frequencies.keys():
+            if word in final_frequencies.keys():
+                final_frequencies[word] += frequencies[word]
+            else:
+                final_frequencies[word] = frequencies[word]
+    return final_frequencies
