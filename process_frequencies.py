@@ -37,10 +37,10 @@ def get_word_frequencies(text: Iterable[str], frequencies=None) -> dict[str, int
             frequencies[word] += 1
         else:
             frequencies[word] = 1
-    return remove_stop_words({k: v for k, v in sorted(frequencies.items(), key=lambda item: item[1], reverse = True)})
+    return __remove_stop_words({k: v for k, v in sorted(frequencies.items(), key=lambda item: item[1], reverse = True)})
 
 def __read_book(file):
-    return chain.from_iterable(map(process_line, file))
+    return chain.from_iterable(map(__process_line, file))
 
 def __process_line(line):
     return "".join(l for l in line.lower().strip() if l not in string.punctuation+"\u201c\u201d\u2019\u2014").split()
