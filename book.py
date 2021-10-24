@@ -14,18 +14,18 @@ class Book:
     def __init__(self, book: Iterable[str]):
         preprocessedText = remove_copyright.process_file(book)
         self.__text = preprocessedText[0]
-        self.__author = preprocessedText[1]
-        self.__title = preprocessedText[2]
+        self.__title = preprocessedText[1]
+        self.__author = preprocessedText[2]
 
     # Returns an iterator of the book's text
     def text(self) -> Iterable[str]:
-        return self.text
+        return self.__text
 
     def title(self) -> str:
-        return self.title
+        return self.__title
 
     def author(self) -> str:
-        return self.author
+        return self.__author
 
     def __build_punctuation(self) -> None:
         # Really quite ugly please fix up later

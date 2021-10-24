@@ -2,7 +2,7 @@ from types import TracebackType
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
-from book_class import book
+from book import Book
 from process_book import read_book
 import re
 
@@ -46,7 +46,7 @@ def get_frequency_table(book_list):
     for book in book_list:
         data = []
         title = book.title()
-        #print(title)
+        print(title)
         
         genres = get_genres_from_web(title)
         #print(genres)
@@ -60,7 +60,7 @@ def get_frequency_table(book_list):
     return table
         
 
-books = [Book(process_file(open("TestFile.txt","r",encoding="utf-8"))), Book(process_file(open("TestFile2.txt","r",encoding="utf-8")))]
+books = [Book(open("TestFile.txt","r",encoding="utf-8")), Book(open("TestFile2.txt","r",encoding="utf-8"))]
 freq = get_frequency_table(books)
 print(freq)
 #print(get_word_frequencies(read_book(books[0].text())))
