@@ -29,3 +29,12 @@ pip install -r requirements.txt
 python3 analyze.py
 deactivate
 ```
+
+## Parallel calculations
+```
+CORES = 8
+python3 parallel.py > Makefile
+make -j${CORES}
+```
+
+This

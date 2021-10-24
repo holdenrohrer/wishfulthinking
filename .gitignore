@@ -2,3 +2,5 @@ env
 __pycache__
 zip
 www.gutenberg.org
+Makefile
+output
