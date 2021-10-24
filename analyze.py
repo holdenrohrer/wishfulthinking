@@ -4,7 +4,6 @@ import process_book
 import naive_bayes
 import process_data
 import remove_copyright
-import unzip
 import os
 import itertools
 import test_bayes
@@ -36,10 +35,14 @@ def get_frequencies():
     frequency = {}
     for path in direntries:
         with open('zip/'+path, 'rb') as f:
-            frequency = process_frequencies.get_word_frequencies(process_book.read_book(remove_copyright.process_file(unzip.unzip(f))), frequency)
+            try:
+                frequency = process_frequencies.get_word_frequencies(remove_copyright.process_file(unzip.unzip(f))[0], frequency)
+            except Exception as ex:
+                print(f"Error found in file {f}")
+                raise ex
             f.close()
             n += 1
-            print(f"finished {n} books")
+            print(f"finished {n} books", file=sys.stderr)
     return frequency
 genres_of_books = [[] for doc_freq in document_frequencies]
 

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
+import book_class
 
 app = Flask(__name__)
 
@@ -20,6 +21,7 @@ def display_file():
 
         file = open(app.config['UPLOAD_FOLDER'] + filename,"r")
         content = filename
+        
         #content = file.read()   
         
     return render_template('content.html', content=content) 
