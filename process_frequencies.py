@@ -1,7 +1,7 @@
 import string
 import re
 from itertools import chain
-from collections.abc import iterable
+from collections.abc import Iterable
 stop_words = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves',
     'you', "you're", "you've", "you'll", "you'd", 'your', 'yours',
     'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she',
@@ -33,7 +33,8 @@ def read_book(file):
 def process_line(line):
     return "".join(l for l in line.lower().strip() if l not in string.punctuation).split()
 
-def get_word_frequencies(text, frequencies=None):
+def get_word_frequencies(text: Iterable[str], frequencies=None) -> dict[str, int]:
+    wordlist = __read_book(text)
     if frequencies == None:
         frequencies = {}
     for word in wordlist:
@@ -41,10 +42,10 @@ def get_word_frequencies(text, frequencies=None):
             frequencies[word] += 1
         else:
             frequencies[word] = 1
-    return remove_stop_words({k: v for k, v in frequencies.items()})
+    return __remove_stop_words(frequencies)
 
 def __read_book(file):
-    return chain.from_iterable(map(process_line, file))
+    return chain.from_iterable(map(__process_line, file))
 
 def __process_line(line):
     return "".join(l for l in line.lower().strip() if l not in string.punctuation+"\u201c\u201d\u2019\u2014").split()
