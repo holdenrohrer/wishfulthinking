@@ -3,7 +3,7 @@ from typing import NewType
 import string
 import remove_copyright
 
-Punctuation = NewType('Punctuation', tuple[int, int, int, int, int]
+Punctuation = NewType('Punctuation', tuple[int, int, int, int, int])
 class Book:
     __text: Iterable[str]
     __author: str
@@ -75,6 +75,3 @@ class Book:
 
     def avg_sen_len(self):
         return self.punctuation()[4]
-
-f = open("archive/10003.txt")
-b = Book(
