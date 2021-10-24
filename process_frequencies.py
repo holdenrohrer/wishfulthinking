@@ -41,7 +41,7 @@ def get_word_frequencies(text, frequencies=None):
             frequencies[word] += 1
         else:
             frequencies[word] = 1
-    return remove_stop_words({k: v for k, v in sorted(frequencies.items(), key=lambda item: item[1], reverse = True)})
+    return remove_stop_words({k: v for k, v in frequencies.items()})
 
 def remove_stop_words(word_freqs):
     for word in stop_words:

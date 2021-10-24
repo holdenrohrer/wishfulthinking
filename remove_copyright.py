@@ -17,8 +17,3 @@ def process_file(book_file):
     between_stars_arr = [False] # stores state of betweenStars as a ref
     return (filter(lambda line: process_line(line, between_stars_arr), book_file), title, author)
 
-
-file = open("TestFile.txt","r", encoding="utf8")
-iterator = iter(file.readlines())
-print("test")
-print(process_file(iterator))

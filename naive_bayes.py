@@ -8,26 +8,26 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 
 def naive_bayes_implement(document_frequencies, genres):
-    le = preprocessing.LabelEncoder()
-    encoded_words = []
-    encoded_frequencies = []
-    encoded_genres = []
+    uncoded_words = []
+    uncoded_frequencies = []
+    targets = []
 
-
-    for frequencies in document_frequencies:
+    for idx, frequencies in enumerate(document_frequencies):
         for word in frequencies.keys():
-            encoded_words.append(word)
-            encoded_frequencies.append(frequencies[word])
-            encoded_genres.append(document_frequencies.index(frequencies))
+            uncoded_words.append(word)
+            uncoded_frequencies.append(frequencies[word])
+            targets.append(idx) # Also genre idx
+    print(targets)
+    wordsle = preprocessing.LabelEncoder()
+    encoded_words = wordsle.fit_transform(uncoded_words)
+    freqle = preprocessing.LabelEncoder()
+    encoded_frequencies = freqle.fit_transform(uncoded_frequencies)
 
-    encoded_words = le.fit_transform(encoded_words)
-    encoded_frequencies = le.fit_transform(encoded_frequencies)
-    targets = le.fit_transform(encoded_genres)
 
-    data = list(tuple(zip(encoded_words, encoded_frequencies)))
+    data = list(zip(encoded_words, encoded_frequencies))
 
     gnb = GaussianNB()
-    gnb.fit(data, encoded_genres)
+    gnb.fit(data, targets)
 
 
     predicted = gnb.predict([[0, 2]])
@@ -36,7 +36,13 @@ def naive_bayes_implement(document_frequencies, genres):
     gnb.fit(X_train, y_train)
 
     y_pred = gnb.predict(X_test)
+    print(encoded_words)
+    print(encoded_frequencies)
+    print(targets)
+    print(wordsle.inverse_transform(encoded_words))
+    print(freqle.inverse_transform(encoded_frequencies))
+
+    print(tuple(zip(genres, targets)))
     print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
     
     print(predicted)
-
