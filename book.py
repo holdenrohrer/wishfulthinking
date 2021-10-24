@@ -2,7 +2,8 @@ from collections.abc import Iterable
 from typing import NewType
 import string
 import remove_copyright
-
+from process_book import read_book
+from process_frequencies import get_word_frequencies
 Punctuation = NewType('Punctuation', tuple[int, int, int, int, int])
 class Book:
     __text: Iterable[str]
@@ -10,12 +11,27 @@ class Book:
     __title: str
     __punctuation: Punctuation
 
+    def make_vector(self,corpus_vector):
+        vector = []
+        wordTup= self.punctuation()
+        iterable = self.text()
+        frequencies = get_word_frequencies(read_book(iterable))
+        for word in corpus_vector:
+            if word in frequencies.keys():
+                vector.append(frequencies[word])
+            else:
+                vector.append(0)
+        for num in wordTup:
+            vector.append(num)
+        return tuple(vector)
+
     # typically, Iterable[str] is an unprocessed file
-    def __init__(self, book: Iterable[str]):
+    def __init__(self, book: Iterable[str]): 
         preprocessedText = remove_copyright.process_file(book)
-        self.__text = preprocessedText[0]
+        self.__text = list(preprocessedText[0])
         self.__title = preprocessedText[1]
         self.__author = preprocessedText[2]
+        self.__punctuation = None
 
     # Returns an iterator of the book's text
     def text(self) -> Iterable[str]:
@@ -29,7 +45,7 @@ class Book:
 
     def __build_punctuation(self) -> None:
         # Really quite ugly please fix up later
-        iterable = self.iterator[0]
+        iterable = self.text()
         comma_counter = 0
         sentence_counter = 0
         word_counter = 0
