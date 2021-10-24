@@ -8,7 +8,7 @@ def process_file(book_file):
     for line in book_file:
         if line[:8] == "Author: ":
             author = line[8:-1]
-            break 
+            break
     def process_line(line, arr):
         if line[:4] == '*** ':
             arr[0] = not arr[0]
@@ -16,9 +16,3 @@ def process_file(book_file):
         return arr[0]
     between_stars_arr = [False] # stores state of betweenStars as a ref
     return (filter(lambda line: process_line(line, between_stars_arr), book_file), title, author)
-
-
-file = open("TestFile.txt","r", encoding="utf8")
-iterator = iter(file.readlines())
-print("test")
-print(process_file(iterator))
