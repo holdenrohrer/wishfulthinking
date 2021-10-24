@@ -1,17 +1,28 @@
 #!/usr/bin/python3
-import subprocess
-from parallel import build_makefile
 from process_frequencies import combine_frequencies
+from multiprocessing import Pool, Queue
+from generate_corpus import process_paths
+import os
 import json
 
 splits = 8
 outdir = 'output'
-build_makefile('test', splits=splits, outputdir=outdir)
-subprocess.call(('make'))
-corpus = []
-for output in range(splits):
-    with open(f'{outdir}/{output}', 'r') as file:
-        corpus.append(json.load(file))
+inputdir = 'zip'
+
+def worker(chunk, queue):
+    queue.put(process_paths(chunk))
+    print("done")
+
+files = [f'./{inputdir}/'+file for file in list(os.listdir(inputdir))]
+processes = []
+chunklen = int(len(files)/splits) + 1
+chunks = []
+for y in range(splits):
+    chunks.append(files[min(y*chunklen, len(files)):min((y+1)*chunklen, len(files))])
+
+pool = Pool(processes = 8)
+corpus = pool.map(process_paths, chunks) # list of frequencies by chunks
+
 total = combine_frequencies(corpus)
-with open(f'{outdir}/corpus', 'w') as out:
-    json.dump(total, out)
+with open("corpus") as file:
+    json.dump(total, file)
