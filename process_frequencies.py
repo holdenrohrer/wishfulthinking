@@ -1,7 +1,7 @@
 import string
 import re
 from itertools import chain
-from collections.abc import iterable
+from collections.abc import Iterable
 stop_words = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves',
     'you', "you're", "you've", "you'll", "you'd", 'your', 'yours',
     'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she',
@@ -28,7 +28,7 @@ stop_words = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves',
     "won't", 'wouldn', "wouldn't"]
 
 
-def get_word_frequencies(text: Iterable[str], frequencies=None) -> dict[:
+def get_word_frequencies(text: Iterable[str], frequencies=None) -> dict[str, int]:
     wordlist = __read_book(text)
     if frequencies == None:
         frequencies = {}
