@@ -9,7 +9,9 @@ outputnum = 0
 def requirements(filelist: str) -> str:
     global outputnum
     print(f"output/{outputnum}: {filelist}")
-    print(f"\tpython3 corpus.py $@ $?")
+    print(f"\tpython3 generate_corpus.py $@ {filelist}")
+    # we might be able to use $? to improve on "interrupted runs" time
+    # if we log out the current calculated frequency on interrupt/error.
     outputnum += 1
 
 for y in range(splits-1):
