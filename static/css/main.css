@@ -1,4 +1,37 @@
 body {
     margin: 0;
-    font-family: sans-serif 
+    /*font-family: "Comic Sans MS", serif;*/
+    font-family: serif;
+    background-color: lightskyblue;
+    /* If you don't want to use it, why is it on your computer? */
+}
+
+div.small {
+    width: 100%;
+    display: flex;
+}
+
+div.container {
+    margin: 50px;
+    max-width: 30em;
+    margin: 0 auto;
+}
+
+input[type=file] {
+    padding: 0px;
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 40px;
+    font-family: inherit;
+}
+
+div.input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 }

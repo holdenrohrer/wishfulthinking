@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    font-family: "Comic Sans MS" !important;
+    /* If you don't like it, why is it on your computer? */
+}
+
+div {
+    width: 100%;
+    display: flex;
+}
+
+input {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 40px;
+}
+
+div.input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}

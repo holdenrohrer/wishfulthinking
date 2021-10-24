@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
-import book_class
+from book import Book
+import vectors
+import rec_test
 
 app = Flask(__name__)
 
@@ -9,7 +11,6 @@ app.config["UPLOAD_FOLDER"] = "static/"
 @app.route('/')
 def upload_file():
     return render_template('index.html')
-
 
 @app.route('/display', methods = ['GET', 'POST'])
 def display_file():
@@ -20,7 +21,11 @@ def display_file():
         f.save(app.config['UPLOAD_FOLDER'] + filename)
 
         file = open(app.config['UPLOAD_FOLDER'] + filename,"r")
-        content = filename
+        uploaded_book = Book(file, basic_text=True)
+        
+        #vectors.similarity(uploaded_book.make_vector(), placeholder_vector)
+        content = rec_test.call_example(uploaded_book)
+        
         
         #content = file.read()   
         

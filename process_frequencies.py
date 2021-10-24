@@ -27,12 +27,6 @@ stop_words = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves',
     'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won',
     "won't", 'wouldn', "wouldn't"]
 
-def read_book(file):
-    return chain.from_iterable(map(process_line, file))
-
-def process_line(line):
-    return "".join(l for l in line.lower().strip() if l not in string.punctuation).split()
-
 def get_word_frequencies(text: Iterable[str], frequencies=None) -> dict[str, int]:
     wordlist = __read_book(text)
     if frequencies == None:

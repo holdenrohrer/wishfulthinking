@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" />
+    <title>Wishful Thinking</title>
 </head>
 <body>
-    <form action = "/display" method = "POST" 
-         enctype = "multipart/form-data">
-         <input type = "file" name = "file" />
-         <br><br>
-         <input type = "submit"/>
-         <input type = "reset"/>
-      </form>  
+    <div class="container">
+        <h1>Wishful Thinking</h1>
+        <form action = "/display" method = "POST" 
+            enctype = "multipart/form-data">
+            <div class="small">
+                <div class="input">
+                    <input type = "file" name = "file" />
+                </div>
+            </div>
+            <div class="small">
+                <div class="input">
+                    <input type="submit" value="Analyze File" />
+                    <input type="reset"/>
+                </div>
+            </div>
+        </form>  
+        <small>A No Bad, Very Good, Quite Effective Recommendation Algorithm</small>
+    </div>
 </body>
 </html>

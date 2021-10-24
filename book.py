@@ -6,8 +6,8 @@ from process_frequencies import get_word_frequencies
 Punctuation = NewType('Punctuation', tuple[int, int, int, int, int])
 class Book:
     __text: Iterable[str]
-    __author: str
-    __title: str
+    __author: str = "Author Not Found"
+    __title: str = "Title Not Found"
     __punctuation: Punctuation
 
     def make_vector(self,corpus_vector):
@@ -25,11 +25,14 @@ class Book:
         return tuple(vector)
 
     # typically, Iterable[str] is an unprocessed file
-    def __init__(self, book: Iterable[str]):
-        preprocessedText = remove_copyright.process_file(book)
-        self.__text = list(preprocessedText[0])
-        self.__title = preprocessedText[1]
-        self.__author = preprocessedText[2]
+    def __init__(self, book: Iterable[str], basic_text = False):
+        if basic_text:
+            self.__text = list(book)
+        else:
+            preprocessedText = remove_copyright.process_file(book)
+            self.__text = list(preprocessedText[0])
+            self.__title = preprocessedText[1]
+            self.__author = preprocessedText[2]
         self.__punctuation = None
 
     # Returns an iterator of the book's text
