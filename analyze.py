@@ -13,7 +13,7 @@ def worker(chunk, queue):
     queue.put(process_paths(chunk))
     print("done")
 
-files = [f'./{inputdir}/'+file for file in list(os.listdir(inputdir))]
+files = [f'./{inputdir}/{file}' for file in list(os.listdir(inputdir))]
 processes = []
 chunklen = int(len(files)/splits) + 1
 chunks = []
@@ -24,5 +24,12 @@ pool = Pool(processes = 8)
 corpus = pool.map(process_paths, chunks) # list of frequencies by chunks
 
 total = combine_frequencies(corpus)
-with open("corpus") as file:
+with open("corpus", 'w') as file:
     json.dump(total, file)
+
+vecs = []
+for file in files:
+    with open(file, "r") as f:
+        vecs.append(Book(f).archive())
+with open("vecs", "w") as f:
+    json.dump(vecs, f)

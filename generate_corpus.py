@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import process_frequencies
-import process_book
 import remove_copyright
 import unzip
 import sys
@@ -12,7 +11,7 @@ def process_paths(paths):
     for path in paths:
         with open(path, 'rb') as f:
             try:
-                frequency = process_frequencies.get_word_frequencies(process_book.read_book(remove_copyright.process_file(unzip.unzip(f))[0]), frequency)
+                frequency = process_frequencies.get_word_frequencies(remove_copyright.process_file(unzip.unzip(f))[0], frequency)
             except Exception as ex:
                 print(f"Error found in file {f}", file=sys.stderr)
                 raise ex

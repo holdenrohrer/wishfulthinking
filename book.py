@@ -1,21 +1,25 @@
 from collections.abc import Iterable
-from typing import NewType
 import string
 import remove_copyright
-from process_book import read_book
 from process_frequencies import get_word_frequencies
-Punctuation = NewType('Punctuation', tuple[int, int, int, int, int])
+from analyze_types import Punctuation, Frequencies
 class Book:
-    __text: Iterable[str]
+    __text: list[str]
     __author: str
     __title: str
     __punctuation: Punctuation
+    __frequencies: list[Frequency]
 
-    def make_vector(self,corpus_vector):
+    def frequencies(self):
+        if self.__frequencies == None:
+            self.__frequencies = get_word_frequencies(self.__text)
+        return self.__frequencies
+
+    def make_vector(self, corpus_vector: Frequency):
         vector = []
         wordTup= self.punctuation()
         iterable = self.text()
-        frequencies = get_word_frequencies(read_book(iterable))
+        frequencies = self.frequencies()
         for word in corpus_vector:
             if word in frequencies.keys():
                 vector.append(frequencies[word])
@@ -26,12 +30,13 @@ class Book:
         return tuple(vector)
 
     # typically, Iterable[str] is an unprocessed file
-    def __init__(self, book: Iterable[str]): 
+    def __init__(self, book: Iterable[str]):
         preprocessedText = remove_copyright.process_file(book)
         self.__text = list(preprocessedText[0])
         self.__title = preprocessedText[1]
         self.__author = preprocessedText[2]
         self.__punctuation = None
+        self.__frequencies = None
 
     # Returns an iterator of the book's text
     def text(self) -> Iterable[str]:
@@ -91,3 +96,8 @@ class Book:
 
     def avg_sen_len(self):
         return self.punctuation()[4]
+
+    def archive(self, corpus: Frequencies):
+        return {punctuation: self.punctuation(), vector:
+                self.make_vector(corpus), author: self.__author, title:
+                self.__title, frequencies: self.frequencies()}
