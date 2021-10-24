@@ -1,23 +1,34 @@
+from collections.abc import Iterable
+from typing import NewType
 import string
-#ACCEPTS PROCESSED TUPLES
-class book:
-    def __init__(self,bookIterator):
-        self.iterator = bookIterator
+import remove_copyright
 
-# Returns an iterator of the book's text
-    def text(self):
-        text = self.iterator[0]
-        return text
+Punctuation = NewType('Punctuation', tuple[int, int, int, int, int])
+class Book:
+    __text: Iterable[str]
+    __author: str
+    __title: str
+    __punctuation: Punctuation
 
-    def title(self):
-        title = self.iterator[1]
-        return title
-    
-    def author(self):
-        author = self.iterator[2]
-        return author
-    
-    def punctuation(self):
+    # typically, Iterable[str] is an unprocessed file
+    def __init__(self, preprocessedText: Iterable[str]):
+        preprocessedText = remove_copyright.process_file(book)
+        self.__text = preprocessedText[0]
+        self.__author = preprocessedText[1]
+        self.__title = preprocessedText[2]
+
+    # Returns an iterator of the book's text
+    def text(self) -> Iterable[str]:
+        return self.text
+
+    def title(self) -> str:
+        return self.title
+
+    def author(self) -> str:
+        return self.author
+
+    def __build_punctuation(self) -> None:
+        # Really quite ugly please fix up later
         iterable = self.iterator[0]
         comma_counter = 0
         sentence_counter = 0
@@ -45,24 +56,22 @@ class book:
         avg_sentence_len = word_counter/sentence_counter
         return (comma_counter,sentence_counter,word_counter,avg_word_len, avg_sentence_len)
 
+    def punctuation(self) -> Punctuation:
+        if self.__punctuation == None:
+            self.__punctuation = __build_punctuation()
+        return self.__punctuation
+
     def comma_count(self):
-        wordTup = self.punctuation()
-        return wordTup[0]
-    
+        return self.punctuation()[0]
+
     def sentence_count(self):
-        wordTup = self.punctuation()
-        return wordTup[1]
-    
+        return self.punctuation()[1]
+
     def word_count(self):
-        wordTup = self.punctuation()
-        return wordTup[2]
+        return self.punctuation()[2]
 
     def avg_word_len(self):
-        wordTup = self.punctuation()
-        return wordTup[3]
+        return self.punctuation()[3]
 
     def avg_sen_len(self):
-        wordTup = self.punctuation()
-        return wordTup[4]
-    
-
+        return self.punctuation()[4]
