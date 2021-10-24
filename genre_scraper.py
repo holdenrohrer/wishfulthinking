@@ -52,7 +52,7 @@ def get_frequency_table(book_list):
         #print(genres)
         if len(genres) != 0:
             data.append(get_word_frequencies(read_book(book.text())))
-            data.append(1)
+            #data.append(1)
             #print(get_word_frequencies(read_book(book.text())))
             for g in genres:
                 data.append(g)
