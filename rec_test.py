@@ -1,7 +1,6 @@
 from book import Book
 from vectors import similarity
 from process_frequencies import get_word_frequencies
-import opt_einsum._version
 import os
 
 def call_example(user_book):
@@ -9,7 +8,7 @@ def call_example(user_book):
 
     directory = './archive'
     corpus = []
-        
+
     greatest_sim_num = 0
     print(directory)
     print(os.listdir(directory))
@@ -25,9 +24,9 @@ def call_example(user_book):
                     corpus.append(word)
     user_vector = user_book.make_vector(corpus)
 
-    
 
-    for file in os.listdir(directory):      
+
+    for file in os.listdir(directory):
         with open(directory + "/" + str(file), "r") as f:
 
             data_vector = book.make_vector(corpus)
