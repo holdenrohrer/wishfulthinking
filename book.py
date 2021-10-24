@@ -58,7 +58,7 @@ class Book:
 
     def punctuation(self) -> Punctuation:
         if self.__punctuation == None:
-            self.__punctuation = __build_punctuation()
+            self.__punctuation = self.__build_punctuation()
         return self.__punctuation
 
     def comma_count(self):
