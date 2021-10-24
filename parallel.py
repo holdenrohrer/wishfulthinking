@@ -1,20 +1,25 @@
 import os
 
-files = ['./zip/'+file for file in list(os.listdir('zip'))]
-splits = 8
-chunklen = int(len(files)/splits)
-print("all: " + ' '.join(f"output/{num}" for num in range(splits)))
-
 outputnum = 0
-def requirements(filelist: str) -> str:
-    global outputnum
-    print(f"output/{outputnum}: {filelist}")
-    print(f"\tpython3 generate_corpus.py $@ {filelist}")
-    # we might be able to use $? to improve on "interrupted runs" time
-    # if we log out the current calculated frequency on interrupt/error.
-    outputnum += 1
+def build_makefile(inputdir, outputdir='output', splits=8, makefile='Makefile'):
+    '''Expecting a directory full of .zip files, each with a .txt inside
+    them'''
+    files = [f'./{inputdir}/'+file for file in list(os.listdir(inputdir))]
+    chunklen = int(len(files)/splits)
+    outputfile = open(makefile, 'w')
+    outputfile.write("all: " + ' '.join(f"{outputdir}/{num}" for num in range(splits)) + '\n')
 
-for y in range(splits-1):
-    filelist = ' '.join(files[y*chunklen:(y+1)*chunklen])
-    requirements(filelist)
-requirements(' '.join(files[(y+1)*chunklen:]))
+    def requirements(filelist: str) -> str:
+        global outputnum
+        outputfile.write(f"{outputdir}/{outputnum}: {filelist}\n")
+        outputfile.write(f"\tpython3 generate_corpus.py $@ {filelist}\n")
+        # we might be able to use $? to improve on "interrupted runs" time
+        # if we log out the current calculated frequency on interrupt/error.
+        outputnum += 1
+
+    for y in range(splits-1):
+        filelist = ' '.join(files[y*chunklen:(y+1)*chunklen])
+        requirements(filelist)
+    requirements(' '.join(files[(y+1)*chunklen:]))
+
+    outputfile.close()

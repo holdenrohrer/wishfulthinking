@@ -3,13 +3,14 @@ import process_frequencies
 import process_book
 import remove_copyright
 import unzip
-import os
 import sys
+import json
 
 out = sys.argv[1]
 n = 0
 frequency = {}
-for path in sys.argv[2:]:
+paths = sys.argv[2:]
+for path in paths:
     with open(path, 'rb') as f:
         try:
             frequency = process_frequencies.get_word_frequencies(process_book.read_book(remove_copyright.process_file(unzip.unzip(f))[0]), frequency)
@@ -17,6 +18,7 @@ for path in sys.argv[2:]:
             print(f"Error found in file {f}", file=sys.stderr)
             raise ex
         n += 1
-        print(f"finished {n} books", file=sys.stderr)
+        if n % 10 == 0:
+            print(f"finished {n}/{len(paths)} books for file {out}", file=sys.stderr)
 output = open(out, 'w')
-print(frequency, file=output)
+print(json.dump(frequency), output)
