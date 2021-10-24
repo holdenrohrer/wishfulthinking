@@ -13,7 +13,7 @@ def get_frequencies():
     for path in direntries:
         with open('zip/'+path, 'rb') as f:
             try:
-                frequency = process_frequencies.get_word_frequencies(process_book.read_book(remove_copyright.process_file(unzip.unzip(f))[0]), frequency)
+                frequency = process_frequencies.get_word_frequencies(remove_copyright.process_file(unzip.unzip(f))[0], frequency)
             except Exception as ex:
                 print(f"Error found in file {f}")
                 raise ex

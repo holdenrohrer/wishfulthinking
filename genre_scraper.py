@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from book import Book
-from process_book import read_book
 import re
 import json
 
@@ -19,13 +18,13 @@ def get_genres_from_web(book_title):
             driver.get("https://en.wikipedia.org/wiki/Special:Search?search="+book_title)
             url = driver.current_url
             html = driver.page_source
-            
+
             # sets up BeutifulSoup
             soup = BeautifulSoup(html, 'html.parser')
-            
+
             # navigates to info boxes on right hand side
             info_boxes_elem = soup.find("th", class_="infobox-label").parent
-            
+
             # navigates to "Genre" info box
             while "Genre" not in str(info_boxes_elem):
                 info_boxes_elem = info_boxes_elem.next_sibling
@@ -51,21 +50,17 @@ def get_frequency_table(book_list):
         # temporary array storying data for single book
         data = []
         title = book.title()
-        #print(title)
-        
+
         # gets genre array
         (genres, url) = get_genres_from_web(title)
-        #print(genres)
-        
+
 
         # empty arrays signify the book was not found, so is skipped
         if len(genres) != 0:
             # gets word frequencies for book, and adds that
-            dict = get_word_frequencies(read_book(book.text()))
+            dict = get_word_frequencies(book.text())
             data.append(dict)
-            #data.append(1)
-            #print(get_word_frequencies(read_book(book.text())))
-            
+
             # then appends each genre
             for g in genres:
                 data.append(g)
@@ -74,21 +69,11 @@ def get_frequency_table(book_list):
             ### json dump ###
             json_list = json.load(open("test.json","r"))
             json_list.append([{"title":title},{"url":url},dict])
-            #print(json_list)
             json_object = (json.dumps(json_list, indent = 4))
             with open("test.json", "w") as outfile:
                 outfile.write(json_object)
-            ###
     return table
-        
 
 books = [Book(open("TestFile.txt","r",encoding="utf-8")), Book(open("TestFile2.txt","r",encoding="utf-8"))]
 freq = get_frequency_table(books)
 print(freq)
-#print(get_word_frequencies(read_book(books[0].text())))
-#print(get_genres_from_web("Ulysses (novel)"))
-#print(get_frequency_table(["TestFile.txt"]))
-#book_list = [read_book(process_file(open("TestFile.txt","r",encoding="utf-8")))]
-#print(list(get_frequency_table(book_list)))
-#print(get_word_frequencies(read_book(process_file(open("TestFile.txt","r",encoding="utf-8"))[0])))
-

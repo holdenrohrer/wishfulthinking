@@ -2,7 +2,6 @@ from collections.abc import Iterable
 from typing import NewType
 import string
 import remove_copyright
-from process_book import read_book
 from process_frequencies import get_word_frequencies
 Punctuation = NewType('Punctuation', tuple[int, int, int, int, int])
 class Book:
@@ -15,7 +14,7 @@ class Book:
         vector = []
         wordTup= self.punctuation()
         iterable = self.text()
-        frequencies = get_word_frequencies(read_book(iterable))
+        frequencies = get_word_frequencies(iterable)
         for word in corpus_vector:
             if word in frequencies.keys():
                 vector.append(frequencies[word])
@@ -26,7 +25,7 @@ class Book:
         return tuple(vector)
 
     # typically, Iterable[str] is an unprocessed file
-    def __init__(self, book: Iterable[str]): 
+    def __init__(self, book: Iterable[str]):
         preprocessedText = remove_copyright.process_file(book)
         self.__text = list(preprocessedText[0])
         self.__title = preprocessedText[1]
