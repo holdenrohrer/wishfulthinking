@@ -1,18 +1,36 @@
+titlekey = "Title: "
+authorkey = "Author: "
+
+# this is only for books from a specific source that appear in the
+# corpus
+def is_shakespeare_start(line):
+    return line.startswith("SERVICE THAT CHARGES FOR DOWNLOAD TIME OR FOR MEMBERSHIP.>>")
+def is_shakespeare_end(line):
+    return line.startswith("<<THIS ELECTRONIC VERSION OF THE COMPLETE WORKS OF WILLIAM")
+
 def process_file(book_file):
     title = "Title Not Found"
     author = "Author Not Found"
-    for line in book_file:
-        if line[:7] == "Title: ":
-            title = line[7:-1]
+    between_stars = False
+    iterator = iter(book_file)
+    while True:
+        line = next(iterator)
+        if line.strip().startswith('***') and 'START' in line or is_shakespeare_start(line):
             break
-    for line in book_file:
-        if line[:8] == "Author: ":
-            author = line[8:-1]
+        if line.strip().startswith(titlekey):
+            title = line[len(titlekey):-1]
+        elif line.strip().startswith(authorkey):
+            author = line[len(authorkey):-1]
+    return (process_after_metadata(iterator), title, author)
+
+def process_after_metadata(iterator):
+    done = False
+    while True:
+        try:
+            line = next(iterator)
+            if line.strip().startswith('***') and 'END' in line or is_shakespeare_end(line):
+                done = True
+            if not done:
+                yield line
+        except StopIteration as ex:
             break
-    def process_line(line, arr):
-        if line[:4] == '*** ':
-            arr[0] = not arr[0]
-            return False # if cur line's stars, don't return
-        return arr[0]
-    between_stars_arr = [False] # stores state of betweenStars as a ref
-    return (filter(lambda line: process_line(line, between_stars_arr), book_file), title, author)
