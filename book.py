@@ -11,7 +11,7 @@ class Book:
     __punctuation: Punctuation
 
     # typically, Iterable[str] is an unprocessed file
-    def __init__(self, preprocessedText: Iterable[str]):
+    def __init__(self, book: Iterable[str]):
         preprocessedText = remove_copyright.process_file(book)
         self.__text = preprocessedText[0]
         self.__author = preprocessedText[1]
